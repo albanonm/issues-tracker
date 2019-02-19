@@ -9,11 +9,15 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 
 import { Connections } from 'src/app/services/connections';
+import { IssuesListComponent } from './issues-list/issues-list.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    IssuesListComponent,
+    PaginatorComponent
   ],
   imports: [
     BrowserModule,

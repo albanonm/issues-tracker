@@ -1,0 +1,11 @@
+<ul class="list-group" *ngIf="issues && issues.length > 0">
+  <li *ngFor="let issue of issues" class="list-group-item">
+    <div class="media">
+        <img class="mr-3" src="{{issue.user.avatar}}" alt="avatar">
+        <div class="media-body">
+          <h5 class="mt-0">{{issue.user.login}}</h5>
+          {{issue.title}}
+        </div>
+      </div>
+  </li>
+</ul>

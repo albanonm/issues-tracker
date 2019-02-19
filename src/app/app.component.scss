@@ -2,3 +2,7 @@ ul.pagination li a.disabled {
   color: gray;
   pointer-events: none;
 }
+
+.page-link:focus {
+  box-shadow: none;
+}

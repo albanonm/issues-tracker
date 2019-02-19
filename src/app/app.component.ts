@@ -4,6 +4,7 @@ import { Connections } from './services/connections'
 import { Repo } from './models/repo.model';
 import { IssuesItem } from './models/issuesItem.model';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,16 +12,17 @@ import { IssuesItem } from './models/issuesItem.model';
 })
 export class AppComponent {
   
-  title: string = 'issues-tracker';
-  page: number = 1;
-  totalPages: number = 0;
-  pageList: number[] = [];
+  private title: string = 'Github issues tracker';
+  private page: number = 1;
+  //private totalPages: number = 0;
+  private pageList: number[] = [];
 
-  repo: Repo = new Repo;
-  issues: IssuesItem[] = [];
+  private loading: boolean = false;
+  private repo: Repo = new Repo;
+  private issues: IssuesItem[] = [];
   
 
-  searchUrl: string = "https://github.com/phonegap/phonegap-plugin-push";
+  private searchUrl: string = "https://github.com/phonegap/phonegap-plugin-push";
 
 
   constructor(private connections: Connections) {
@@ -29,6 +31,10 @@ export class AppComponent {
 
 
   async getIssuesList() {
+    
+    if (this.loading) {
+      return;
+    }
     
     this.searchUrl = this.searchUrl.trim();
     this.searchUrl = this.searchUrl.replace(/\/$/, "");
@@ -40,49 +46,71 @@ export class AppComponent {
       console.log(JSON.stringify(this.repo)); 
       this.generatePageList(this.repo.pages);
 
-      await this.loadIssues();
+      await this.loadIssues(this.page);
       
     } catch (error) {
       alert("ERROR: "+JSON.stringify(error));
     }
-     
+    
   }
 
 
-  async loadIssues() {
+
+  /**
+   * Load selected page number of current repo.
+   * @param num page number to load.
+   */
+  loadPage(num) {
+    this.loadIssues(num);
+  }
+
+
+  previousPage() {
+    let num = this.page - 1;
+    this.loadPage(num);
+  }
+
+
+  nextPage() {
+    let num = this.page + 1;
+    this.loadPage(num);
+  }
+
+
+  private async loadIssues(num) {
+
+    if (this.loading) {
+      return;
+    }
+    
+    this.loading = true;
+    this.issues = [];
+    this.updatePage(num);
+
     try {
       // load repo issues page list
       this.issues = await this.connections.loadIssues(this.repo.user, this.repo.name, this.page);
       console.log("Issues list: "); 
       console.log(JSON.stringify(this.issues)); 
-      
     } catch (error) {
       alert("ERROR: "+JSON.stringify(error));
+    } finally {
+      this.loading = false;
     }
   }
 
 
-  loadPage(num) {
-    this.page = num;
-      this.loadIssues();
-  }
 
-
-  previousPage() {
-    if (1 < this.page) {
-      this.page --;
-      this.loadIssues();
+  private updatePage(num:number) {
+    if (num < 1) {
+      this.page = 1;
+    }else if(num > this.repo.pages) {
+      this.page = this.repo.pages;
+    }
+    else{
+      this.page = num;
     }
   }
-
-
-  nextPage() {
-    if (this.repo.pages > this.page) {
-      this.page ++;
-      this.loadIssues();
-    }  
-  }
-
 
 
   private generatePageList(num) {

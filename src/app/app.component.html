@@ -1,21 +1,31 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
+
+
 <nav class="navbar navbar-light bg-light">
   <form class="form-inline pl-1 pr-1 pl-sm-3 pr-sm-3 col-12" >
-    <input class="form-control mr-1 col-8 col-sm-8" type="search" placeholder="Repositorio Github..." aria-label="Repositorio Github..." name="search-item" [(ngModel)]="searchUrl">
-    <button class="btn btn-outline-success my-2 ml-sm-1 col-3 col-sm-2" type="submit" (click)="getIssuesList();">Buscar</button>
+    <input class="form-control mr-1 col-8 col-sm-9" type="search" placeholder="Repositorio Github..." aria-label="Repositorio Github..." name="search-item" [(ngModel)]="searchUrl">
+    <button class="btn btn-outline-success my-2 ml-sm-1 col-3 col-sm-2" [class.disabled]="loading" type="submit" (click)="getIssuesList();">Buscar</button>
   </form>
 </nav>
 
 
 <div>
 
-  <div class="d-inline-block col-12" *ngIf="issues.length > 0">
+    <div class="container" *ngIf="repo.name !== ''">
+        <div class="row border">
+            <div class="col-4">Usuario:</div><div class="col-8">{{repo.user}}</div>
+            <div class="col-4">Repositorio:</div><div class="col-8">{{repo.name}}</div>
+            <div class="col-4">Cuestiones:</div><div class="col-8">{{repo.total}}</div>
+        </div>
+    </div>
+
+  <div class="d-inline-block col-12 mt-1 mb-1" *ngIf="repo.pages > 0">
     <nav class="d-inline float-left" aria-label="Page navigation">
       <ul class="pagination">
-          <li class="page-item"><a class="page-link" [class.disabled]="page <= 1" (click)="previousPage()" href="#">Previous</a></li>
-          <li *ngFor="let p of pageList; let i = index;" class="page-item" [class.active]="page === p"><a class="page-link" (click)="loadPage(p)" href="#">{{p}}</a></li> 
-          <li class="page-item"><a class="page-link" href="#" (click)="nextPage();" [class.disabled]="page >= repo.pages" >Next</a></li>
+          <li class="page-item"><a class="page-link" [class.disabled]="page <= 1 || loading" (click)="previousPage()" href="#">Anterior</a></li>
+          <li *ngFor="let p of pageList; let i = index;" class="page-item" [class.active]="page === p"><a class="page-link" [class.disabled]="loading" (click)="loadPage(p)" href="#">{{p}}</a></li> 
+          <li class="page-item"><a class="page-link" href="#" (click)="nextPage();" [class.disabled]="page >= repo.pages || loading" >Siguiente</a></li>
         </ul>
     </nav>
     <!--
@@ -23,18 +33,16 @@
     -->
   </div>
 
-  <ul class="list-group">
-      <li *ngFor="let issue of issues" class="list-group-item">
-        <div class="media">
-            <img class="mr-3" src="{{issue.user.avatar}}" alt="avatar">
-            <div class="media-body">
-              <h5 class="mt-0">{{issue.user.login}}</h5>
-              {{issue.title}}
-            </div>
-          </div>
-      </li>
-  </ul>
+  <!--<paginator [page]="" [totaPages]=""></paginator> -->
 
+
+  <div class="text-center" *ngIf="loading">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+  <issues-list [issues]="issues"></issues-list>
 
 </div>
 
