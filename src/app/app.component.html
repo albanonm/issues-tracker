@@ -5,7 +5,7 @@
 <nav class="navbar navbar-light bg-light">
   <form class="form-inline pl-1 pr-1 pl-sm-3 pr-sm-3 col-12 justify-content-center" >
     <input class="form-control mr-1 col-9 col-sm-10" type="search" placeholder="Repositorio Github..." aria-label="Repositorio Github..." name="search-item" [(ngModel)]="searchUrl">
-    <button class="btn btn-outline-success my-2 ml-sm-1 col-2 col-sm-1" [class.disabled]="loadingRepo || loading" type="submit" (click)="getIssuesList();"><i class="fas fa-search"></i></button>
+    <button class="btn btn-outline-success my-2 ml-sm-1 col-2 col-sm-1" [class.disabled]="loadingRepo || loading || searchUrl.length === 0" type="submit" (click)="getIssuesList();"><i class="fas fa-search"></i></button>
   </form>
 
   <div class="container repo-info" *ngIf="repo.name !== ''">
@@ -16,7 +16,6 @@
     </div>
   </div>
 </nav>
-
 
 
   <div class="container" *ngIf="repo.pages > 0">
@@ -31,6 +30,10 @@
     </div>
   </div>
 
+
+  <div class="container" *ngIf="repo.name === '' && textError === ''">
+      <div class="text-secondary m-2 p-2 text-center">Introduce la url de un repositorio de Github y pulsa la lupa para continuar.</div>
+  </div>
   <div class="text-danger m-2 p-2 text-center">{{textError}}</div>
     
   <div class="container" *ngIf="repo.pages > 0">

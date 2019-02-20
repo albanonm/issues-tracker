@@ -38,9 +38,10 @@ export class AppComponent {
    */
   async getIssuesList() {
     
-    if (this.loading || this.loadingRepo) {
+    if (this.loading || this.loadingRepo || this.searchUrl.length < 1) {
       return;
     }
+
 
     this.repo = new Repo;
     this.issues = [];
