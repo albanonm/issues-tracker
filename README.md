@@ -13,6 +13,7 @@ Se ha decidido decidido añadir la librería de iconos fontawesome para darle al
 
 Para acceder a los datos de Github se ha utilizado el API v3 ya que es de uso público y no requiere registros adicionales. Es importante indicar que tiene un funcionamiento peculiar conocido en la obtención del número total de cuestiones y no devuelve el total sino el número de `cuestiones abiertas`. Aún así es se ha decidido que es suficiente para la elaboración del este ejercicio.
 
+Como el objetivo inicial era el listado de cuestiones y su información básica y para resolver únicamente lo especificado con la mayor brevedad, se ha evitado el añadir navegaciones hacia comentarios concretos. Estos se han introducido mediante enlaces externos a modo de referencia.
 
 ## Ejecutar la aplicación 
 
