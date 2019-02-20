@@ -8,9 +8,9 @@ import { AppComponent } from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 
-import { Connections } from 'src/app/services/connections';
-import { IssuesListComponent } from './issues-list/issues-list.component';
-import { PaginatorComponent } from './paginator/paginator.component';
+import { ConnectionsService } from 'src/app/services/connections.service';
+import { IssuesListComponent } from './components/issues-list/issues-list.component';
+import { PaginatorComponent } from './components/paginator/paginator.component';
 
 
 @NgModule({
@@ -27,7 +27,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
     HttpClientModule
   ],
   providers: [
-    Connections
+    ConnectionsService
   ],
   bootstrap: [AppComponent]
 })

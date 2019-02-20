@@ -3,47 +3,40 @@
 
 
 <nav class="navbar navbar-light bg-light">
-  <form class="form-inline pl-1 pr-1 pl-sm-3 pr-sm-3 col-12" >
-    <input class="form-control mr-1 col-8 col-sm-9" type="search" placeholder="Repositorio Github..." aria-label="Repositorio Github..." name="search-item" [(ngModel)]="searchUrl">
-    <button class="btn btn-outline-success my-2 ml-sm-1 col-3 col-sm-2" [class.disabled]="loading" type="submit" (click)="getIssuesList();">Buscar</button>
+  <form class="form-inline pl-1 pr-1 pl-sm-3 pr-sm-3 col-12 justify-content-center" >
+    <input class="form-control mr-1 col-9 col-sm-10" type="search" placeholder="Repositorio Github..." aria-label="Repositorio Github..." name="search-item" [(ngModel)]="searchUrl">
+    <button class="btn btn-outline-success my-2 ml-sm-1 col-2 col-sm-1" [class.disabled]="loadingRepo || loading" type="submit" (click)="getIssuesList();"><i class="fas fa-search"></i></button>
   </form>
+
+  <div class="container repo-info" *ngIf="repo.name !== ''">
+    <div class="row border">
+      <div class="col-4 title">Usuario:</div><div class="col-8"><a href="https://github.com/{{repo.user}}" target="_blank">{{repo.user}}&nbsp;<i class="fas fa-external-link-alt"></i></a></div>
+      <div class="col-4 title">Repositorio:</div><div class="col-8"><a href="https://github.com/{{repo.user}}/{{repo.name}}" target="_blank">{{repo.name}}&nbsp;<i class="fas fa-external-link-alt"></i></a></div>
+      <div class="col-4 title">Cuestiones:</div><div class="col-8">{{repo.total}}</div>
+    </div>
+  </div>
 </nav>
 
 
-<div>
 
-    <div class="container" *ngIf="repo.name !== ''">
-        <div class="row border">
-            <div class="col-4">Usuario:</div><div class="col-8">{{repo.user}}</div>
-            <div class="col-4">Repositorio:</div><div class="col-8">{{repo.name}}</div>
-            <div class="col-4">Cuestiones:</div><div class="col-8">{{repo.total}}</div>
-        </div>
+  <div class="container" *ngIf="repo.pages > 0">
+    <div class="row">
+      <paginator class="col-12 text-center" [pages]="repo.pages" [currentPage]="page" [loading]="loading" (clickPage)="loadPage($event)" (clickNext)="nextPage()" (clickPrev)="previousPage()"></paginator>
     </div>
-
-  <div class="d-inline-block col-12 mt-1 mb-1" *ngIf="repo.pages > 0">
-    <nav class="d-inline float-left" aria-label="Page navigation">
-      <ul class="pagination">
-          <li class="page-item"><a class="page-link" [class.disabled]="page <= 1 || loading" (click)="previousPage()" href="#">Anterior</a></li>
-          <li *ngFor="let p of pageList; let i = index;" class="page-item" [class.active]="page === p"><a class="page-link" [class.disabled]="loading" (click)="loadPage(p)" href="#">{{p}}</a></li> 
-          <li class="page-item"><a class="page-link" href="#" (click)="nextPage();" [class.disabled]="page >= repo.pages || loading" >Siguiente</a></li>
-        </ul>
-    </nav>
-    <!--
-    <span class="d-inline float-right">{{repo.pages}} páginas</span>
-    -->
   </div>
 
-  <!--<paginator [page]="" [totaPages]=""></paginator> -->
-
-
-  <div class="text-center" *ngIf="loading">
+  <div class="col-12 text-center" *ngIf="loadingRepo || loading">
     <div class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
 
-  <issues-list [issues]="issues"></issues-list>
-
+  <div class="text-danger m-2 p-2 text-center">{{textError}}</div>
+    
+  <div class="container" *ngIf="repo.pages > 0">
+    <div class="row">
+      <issues-list [issues]="issues" class="col-12"></issues-list>
+  </div>
 </div>
 
 

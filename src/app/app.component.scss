@@ -1,8 +1,8 @@
-ul.pagination li a.disabled {
-  color: gray;
-  pointer-events: none;
-}
 
-.page-link:focus {
-  box-shadow: none;
+.repo-info {
+  font-size: 14px;
+  .title {
+    font-weight: 550;
+    color:slategrey;
+  }
 }

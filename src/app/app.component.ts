@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Connections } from './services/connections'
+import { ConnectionsService } from './services/connections.service'
 import { Repo } from './models/repo.model';
 import { IssuesItem } from './models/issuesItem.model';
 
@@ -13,43 +13,59 @@ import { IssuesItem } from './models/issuesItem.model';
 export class AppComponent {
   
   private title: string = 'Github issues tracker';
-  private page: number = 1;
-  //private totalPages: number = 0;
-  private pageList: number[] = [];
+  private page: number = 1;             // Default first page
+  private size: number = 24;            // Set 24 because is good for grids: it is divisible by 2, 3, 4, 6, 8
+  
 
-  private loading: boolean = false;
-  private repo: Repo = new Repo;
-  private issues: IssuesItem[] = [];
+  private loading: boolean = false;     // Loading flag
+  private loadingRepo: boolean = false; // Loading flag
+  private repo: Repo = new Repo;        // Repo basic data
+  private issues: IssuesItem[] = [];    // list with a page of issues items
+  private textError: string = "";
   
 
   private searchUrl: string = "https://github.com/phonegap/phonegap-plugin-push";
+  //private searchUrl: string = "https://github.com/j3k0/cordova-plugin-purchase";
 
 
-  constructor(private connections: Connections) {
+  constructor(private connections: ConnectionsService) {
 
   }
 
 
+  /**
+   * Load repository data.
+   */
   async getIssuesList() {
     
-    if (this.loading) {
+    if (this.loading || this.loadingRepo) {
       return;
     }
+
+    this.repo = new Repo;
+    this.issues = [];
+    this.textError = "";
+
+    this.loadingRepo = true;
     
+    // Basic clean URL string
     this.searchUrl = this.searchUrl.trim();
     this.searchUrl = this.searchUrl.replace(/\/$/, "");
 
     try {
       // Load repo basic data
       this.repo = await this.connections.loadRepo(this.searchUrl);
-      console.log("total: "); 
-      console.log(JSON.stringify(this.repo)); 
-      this.generatePageList(this.repo.pages);
-
+      this.repo.pages = Math.ceil(this.repo.total / this.size);
+      //console.log("total: "); 
+      //console.log(JSON.stringify(this.repo)); 
+      // Get first page of the repository issues
       await this.loadIssues(this.page);
       
     } catch (error) {
-      alert("ERROR: "+JSON.stringify(error));
+      //alert("ERROR: "+JSON.stringify(error));
+      this.textError = error;
+    } finally {
+      this.loadingRepo = false;
     }
     
   }
@@ -65,42 +81,59 @@ export class AppComponent {
   }
 
 
+  /**
+   * Load previous issues page.
+   */
   previousPage() {
     let num = this.page - 1;
     this.loadPage(num);
   }
 
 
+  /**
+   * Load next issues page.
+   */
   nextPage() {
     let num = this.page + 1;
     this.loadPage(num);
   }
 
 
-  private async loadIssues(num) {
+  /**
+   * Load the selected page of issues.
+   */
+  private async loadIssues(num): Promise<any> {
 
+    // If currently loading, stop.
     if (this.loading) {
       return;
     }
     
+    // Lock loading before start.
     this.loading = true;
     this.issues = [];
+    // Check if new page is valid.
     this.updatePage(num);
 
     try {
       // load repo issues page list
-      this.issues = await this.connections.loadIssues(this.repo.user, this.repo.name, this.page);
-      console.log("Issues list: "); 
-      console.log(JSON.stringify(this.issues)); 
+      this.issues = await this.connections.loadIssues(this.repo.user, this.repo.name, this.page, this.size);
+      //console.log("Issues list: "); 
+      //console.log(JSON.stringify(this.issues));
+      return Promise.resolve(this.issues);
     } catch (error) {
-      alert("ERROR: "+JSON.stringify(error));
+      return Promise.reject(error);
     } finally {
+      // Unlock loading after end.
       this.loading = false;
     }
   }
 
 
-
+  /**
+   * Check and update current page to load.
+   * @param num current page to load.
+   */
   private updatePage(num:number) {
     if (num < 1) {
       this.page = 1;
@@ -110,16 +143,6 @@ export class AppComponent {
     else{
       this.page = num;
     }
-  }
-
-
-  private generatePageList(num) {
-
-    this.pageList = [];
-    for(var i = 1; i <= num; i++) {
-      this.pageList.push(i);
-    }
-
   }
 
 

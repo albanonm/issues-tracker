@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IssuesItem } from '../models/issuesItem.model';
+import { IssuesItem } from '../../models/issuesItem.model';
 
 @Component({
   selector: 'issues-list',
@@ -9,7 +9,7 @@ import { IssuesItem } from '../models/issuesItem.model';
 export class IssuesListComponent implements OnInit {
 
 
-  @Input() issues: IssuesItem;
+  @Input() issues: IssuesItem[];
 
   constructor() { }
 

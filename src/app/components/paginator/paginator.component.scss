@@ -1,0 +1,24 @@
+ul.pagination li a.disabled {
+    color: gray;
+    pointer-events: none;
+}
+
+.page-link:focus {
+    box-shadow: none;
+}
+  
+
+
+@media (max-width: 525px) {
+    ul.pagination li a {
+        font-size: 14px;
+        padding: 0.45rem 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    ul.pagination li a {
+        font-size: 12px;
+        padding: 0.35rem 0.45rem;
+    }
+}

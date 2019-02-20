@@ -1,0 +1,15 @@
+<ul class="list-group" *ngIf="issues && issues.length > 0">
+  <li *ngFor="let issue of issues" class="list-group-item" [class.closed]="issue.state === 'closed'">
+    <div class="media">
+        <img class="mr-3 rounded-circle" src="{{issue.user.avatar}}" alt="avatar">
+        <div class="media-body">
+          <div class="i-head mb-2">
+              <h5 class="d-inline mt-0">{{issue.user.login}}</h5>
+              <small class="d-inline float-right">{{issue.comments}}&nbsp;<i class="far fa-comments"></i></small>
+          </div>
+          <div class="i-body"><small class="closed p-1 m-1 bg-secondary text-white rounded" *ngIf="issue.state === 'closed'">Cerrado</small>{{issue.title}}&nbsp;<a href="{{issue.url}}" target="_blank"><i class="fas fa-external-link-alt"></i></a></div> 
+          <div class="mt-1"><small class="float-right">Actualizado: {{issue.updated_at | date:'d MMM y, h:mm a'}}</small></div>
+        </div>
+      </div>
+  </li>
+</ul>

@@ -1,5 +1,3 @@
-import { Issues } from './issues.model';
-
 export class Repo {
     user: string = "";
     name: string = "";

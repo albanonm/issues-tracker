@@ -1,0 +1,13 @@
+<nav class="col-12 mt-1 mb-1" aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+    <li class="page-item"><a class="page-link" [class.disabled]="getCurrentPage() <= 1 || isLoading()" (click)="goToPrev()" href="#"><i class="fas fa-chevron-left"></i></a></li>
+    <li *ngFor="let p of getPageList(); let i = index;" class="page-item" [class.active]="getCurrentPage() === p">
+      <a class="page-link" *ngIf="p !== 0" [class.disabled]="isLoading() || p === 0" (click)="goToPage(p)" href="#">{{p}}</a>
+      <a class="page-link" *ngIf="p === 0" [class.disabled]="true"  href="#">...</a>
+    </li> 
+    <li class="page-item"><a class="page-link" href="#" (click)="goToNext()" [class.disabled]="getCurrentPage() >= getTotalPages() || isLoading()" ><i class="fas fa-chevron-right"></i></a></li>
+  </ul>
+</nav>
+<!--
+<span class="d-inline float-right">{{repo.pages}} páginas</span>
+-->
