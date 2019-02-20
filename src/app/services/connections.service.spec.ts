@@ -76,36 +76,4 @@ describe('ConnectionsService', () => {
   });
 
 
-
-
-/*
-  describe('#makeGET', () => {
-
-    it('should return an Promise<Repo>', () => {
-      const dummyRepo =  {
-          id: 33494287,
-          name: "phonegap-plugin-push",
-          full_name: "phonegap/phonegap-plugin-push"
-      };
-
-      const dummyUrl = service.API_URL+'/phonegap/phonegap-plugin-push';
-
-      
-      service['makeGET'](dummyUrl).then(repo => {
-        expect(Object.keys(repo).length).toBe(3);
-        expect(repo).toEqual(dummyRepo);
-      });
-
-
-      const req = httpMock.expectOne(dummyUrl);
-      expect(req.request.urlWithParams).toMatch(dummyUrl);
-      expect(req.request.method).toBe('GET');
-      req.flush(dummyRepo);
-
-    });
-  });
-*/
-
-
-
 });
