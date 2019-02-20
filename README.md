@@ -29,3 +29,10 @@ En caso de que la carga del repositorio falle o que la URL del repositorio no se
 Para ejecutar los tests unitarios se aplicará el comando `ng test`.
 
 
+## FAQ
+
+# No me funciona el comando ng en MacOS
+
+Si de inicio no reconoce la consola el comando `ng`, Ejecutar el siguiente comando para añadirlo a la sesión:
+
+`alias ng="/usr/local/lib/node_modules/node/lib/node_modules/@angular/cli/bin/ng"`
