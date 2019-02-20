@@ -24,8 +24,8 @@ export class AppComponent {
   private textError: string = "";
   
 
-  private searchUrl: string = "https://github.com/phonegap/phonegap-plugin-push";
-  //private searchUrl: string = "https://github.com/j3k0/cordova-plugin-purchase";
+  private searchUrl: string = ""; //"https://github.com/phonegap/phonegap-plugin-push";
+  
 
 
   constructor(private connections: ConnectionsService) {
